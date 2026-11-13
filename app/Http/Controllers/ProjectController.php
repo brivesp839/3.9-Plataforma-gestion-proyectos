@@ -127,8 +127,14 @@ class ProjectController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Project $project) //Llama al modelo de project y entrega el proyecto
     {
-        //
+        //Borro el proyecto con Eloquent
+        $project->delete();
+
+        //Redirigo al listado
+        return redirect()
+        ->route('projects.index')
+        ->with('status', 'Datos del proyecto actualizados correctamente.');
     }
 }
