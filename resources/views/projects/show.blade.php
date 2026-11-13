@@ -92,11 +92,20 @@
                 <a href="{{ route('projects.index') }}" class="text-sm text-gray-600 hover:text-gray-900">
                     &larr; Volver al listado
                 </a>
+
                 <!--Botón para redirigir a edit -->
                 <a href="{{ route('projects.edit', $project) }}"
                     class="inline-flex items-center px-4 py-2 bg-gray-800 text-white text-xs font-semibold uppercase rounded-md hover:bg-gray-700">
                     Editar
                 </a>
+
+                <!--Botón para borrar el proyecto -->
+                <form method="POST" action="{{ route('projects.destroy', $project) }}"
+                    onsubmit="return confirm('¿Seguro que quieres eliminar este proyecto? Esta acción no se puede deshacer.')">
+                    @csrf
+                    @method('DELETE')
+                    <x-danger-button>Eliminar</x-danger-button>
+                </form>
             </div>
 
         </div>
