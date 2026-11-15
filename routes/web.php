@@ -2,7 +2,6 @@
 
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\UserController;
 use App\Http\Controllers\ProjectController;
 
 Route::get('/', function () {
@@ -25,5 +24,6 @@ require __DIR__.'/auth.php';
 Route::middleware('auth')->group(function () { 
     //Middleware obliga a que se tenga que iniciar sesión para acceder a estas rutas
     Route::resource('projects', ProjectController::class);
-    Route::resource('users', UserController::class);
+    Route::put('projects/{project}/users', [ProjectController::class, 'syncUsers'])
+    ->name('projects.users.sync');
 });

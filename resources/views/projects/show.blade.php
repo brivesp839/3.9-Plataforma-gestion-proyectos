@@ -88,6 +88,37 @@
                 </div>
             </div>
 
+            {{-- Asignar participantes --}}
+            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+                <div class="p-6 text-gray-900">
+                    <h3 class="font-semibold text-lg mb-4">Asignar participantes</h3>
+
+                    @if (session('status'))
+                    <div class="mb-4 p-3 rounded-md bg-green-100 text-green-800 text-sm">
+                        {{ session('status') }}
+                    </div>
+                    @endif
+
+                    <form method="POST" action="{{ route('projects.users.sync', $project) }}">
+                        @csrf
+                        @method('PUT')
+
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                            @foreach ($users as $user)
+                            <label class="flex items-center gap-2 text-sm">
+                                <input type="checkbox" name="users[]" value="{{ $user->id }}"
+                                    class="rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
+                                    @checked($project->users->contains($user))>
+                                {{ $user->name }}
+                            </label>
+                            @endforeach
+                        </div>
+
+                        <x-primary-button class="mt-4">Guardar participantes</x-primary-button>
+                    </form>
+                </div>
+            </div>
+
             <div>
                 <a href="{{ route('projects.index') }}" class="text-sm text-gray-600 hover:text-gray-900">
                     &larr; Volver al listado

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Project;
+use App\Models\User;
 
 class ProjectController extends Controller
 {
@@ -66,8 +67,8 @@ class ProjectController extends Controller
 
         //Redirigo al listado en vez de crear vista para evitar duplicación del proyecto
         return redirect()
-        ->route('projects.index')
-        ->with('status', 'Proyecto creado correctamente.');
+            ->route('projects.index')
+            ->with('status', 'Proyecto creado correctamente.');
     }
 
     /**
@@ -78,8 +79,10 @@ class ProjectController extends Controller
     {
         //Load trae 1 vez el creador y los participantes
         $project->load(['creator', 'users']);
+        //Paso todos los usuarios a la vista
+        $users = User::orderBy('name')->get();
 
-        return view('projects.show', compact('project')); //Llama a la lista y le pasa los datos
+        return view('projects.show', compact('project', 'users')); //Llama a la lista y le pasa los datos
     }
 
     /**
@@ -119,9 +122,8 @@ class ProjectController extends Controller
 
         //Redirigo al listado en vez de crear vista para evitar duplicación del proyecto
         return redirect()
-        ->route('projects.index')
-        ->with('status', 'Datos del proyecto actualizados correctamente.');
-
+            ->route('projects.index')
+            ->with('status', 'Datos del proyecto actualizados correctamente.');
     }
 
     /**
@@ -134,7 +136,20 @@ class ProjectController extends Controller
 
         //Redirigo al listado
         return redirect()
-        ->route('projects.index')
-        ->with('status', 'Datos del proyecto actualizados correctamente.');
+            ->route('projects.index')
+            ->with('status', 'Datos del proyecto actualizados correctamente.');
+    }
+
+    //Asigno los usuarios al proyecto
+    public function syncUsers(Request $request, Project $project)
+    {
+        $validated = $request->validate([
+            'users'   => ['nullable', 'array'],
+            'users.*' => ['exists:users,id'], //Valida cada elemento del array: que el id exista en users
+        ]);
+
+        $project->users()->sync($validated['users'] ?? []); // ?? [] cubre el caso de no marcar ninguna casilla
+
+        return back()->with('status', 'Participantes actualizados.'); //Devuelve a la página anterior
     }
 }

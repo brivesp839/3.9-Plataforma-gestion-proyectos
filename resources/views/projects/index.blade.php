@@ -1,4 +1,4 @@
-<x-app-layout>
+<x-app-layout> {{-- Se carga la plantilla generada por Breeze --}}
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
             {{ __('Proyectos') }}
@@ -9,7 +9,7 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900 overflow-x-auto">
-                    <!--Modificación para ruta create -->
+                    {{--Modificación para ruta create --}}
                     <div class="mb-4">
                         <a href="{{ route('projects.create') }}"
                             class="inline-flex items-center px-4 py-2 bg-gray-800 text-white text-xs font-semibold uppercase rounded-md hover:bg-gray-700">
@@ -36,14 +36,14 @@
                         <tbody class="divide-y divide-gray-100 text-sm">
                             @forelse ($projects as $project)
                             <tr>
-                                <!---------------------Modifico el título------------------------------>
-                                <!--<td class="px-4 py-3 font-medium">{{ $project->title }}</td>-->
+                                {{-- -------------------Modifico el título---------------------------- --}}
+                                {{-- <td class="px-4 py-3 font-medium">{{ $project->title }}</td> --}}
                                 <td class="px-4 py-3 font-medium">
                                     <a href="{{ route('projects.show', $project) }}" class="text-indigo-600 hover:underline">
                                         {{ $project->title }}
                                     </a>
                                 </td>
-                                <!---------------------Modifico el título------------------------------>
+                                {{-- -------------------Modifico el título---------------------------- --}}
                                 <td class="px-4 py-3">{{ $project->creator->name }}</td>
                                 <td class="px-4 py-3">
                                     <span class="px-2 py-1 text-xs rounded-full {{ match ($project->status) {
